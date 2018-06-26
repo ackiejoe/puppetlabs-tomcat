@@ -221,7 +221,9 @@ describe 'tomcat::service', type: :define do
       }
     end
 
-    it { expect('/etc/init.d/tomcat-default').to have_file_content '-wait 15' }
+    it {
+      File.read("/etc/init.d/tomcat-default").should include "-wait 15"
+    }
   end
   describe 'failing tests' do
     context 'bad use_jsvc' do

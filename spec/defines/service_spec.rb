@@ -192,7 +192,6 @@ describe 'tomcat::service', type: :define do
     # so let's just make sure it compiles
     it { is_expected.to compile }
   end
-
   context 'jsvc true and init true with wait_timeout' do
     let :params do
       {
@@ -213,8 +212,6 @@ describe 'tomcat::service', type: :define do
       )
     }
   end
-
-
   context 'jsvc true and init true with wait_timeout file contents test' do
     let :params do
       {
@@ -222,13 +219,10 @@ describe 'tomcat::service', type: :define do
         use_init: true,
         wait_timeout: 15,
       }
-    let(:file) { '/etc/init.d/tomcat-default' }
-    let(:content) { '-wait 15' }
     end
 
-    it { expect(file).to have_file_content content }
+    it { expect('/etc/init.d/tomcat-default').to have_file_content '-wait 15' }
   end
-
   describe 'failing tests' do
     context 'bad use_jsvc' do
       let :params do

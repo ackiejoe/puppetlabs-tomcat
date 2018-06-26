@@ -211,7 +211,6 @@ describe 'tomcat::service', type: :define do
         'stop' => 'service tomcat-default stop',
         'status' => 'service tomcat-default status'
       )
-      File.read("/etc/init.d/tomcat-default").should include "-wait 15"
     }
   end
 

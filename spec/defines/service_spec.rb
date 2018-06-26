@@ -192,6 +192,44 @@ describe 'tomcat::service', type: :define do
     # so let's just make sure it compiles
     it { is_expected.to compile }
   end
+
+  context 'jsvc true and init true with wait_timeout' do
+    let :params do
+      {
+        use_jsvc: true,
+        use_init: true,
+        wait_timeout: 15,
+      }
+    end
+
+    it {
+      is_expected.to contain_service('tomcat-default').with(
+        'hasstatus' => true,
+        'hasrestart' => true,
+        'ensure' => 'running',
+        'start' => 'service tomcat-default start',
+        'stop' => 'service tomcat-default stop',
+        'status' => 'service tomcat-default status'
+      )
+      File.read("/etc/init.d/tomcat-default").should include "-wait 15"
+    }
+  end
+
+
+  context 'jsvc true and init true with wait_timeout file contents test' do
+    let :params do
+      {
+        use_jsvc: true,
+        use_init: true,
+        wait_timeout: 15,
+      }
+    let(:file) { '/etc/init.d/tomcat-default' }
+    let(:content) { '-wait 15' }
+    end
+
+    it { expect(file).to have_file_content content }
+  end
+
   describe 'failing tests' do
     context 'bad use_jsvc' do
       let :params do
@@ -237,6 +275,19 @@ describe 'tomcat::service', type: :define do
       end
 
       it { is_expected.to compile }
+    end
+    context 'bad wait_timeout' do
+      let :params do
+        {
+          wait_timeout: 'foo',
+        }
+      end
+
+      it do
+        expect {
+          catalogue
+        }.to raise_error(Puppet::Error, %r{Integer})
+      end
     end
   end
 end

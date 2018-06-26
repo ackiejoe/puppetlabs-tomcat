@@ -208,21 +208,8 @@ describe 'tomcat::service', type: :define do
         'ensure' => 'running',
         'start' => 'service tomcat-default start',
         'stop' => 'service tomcat-default stop',
-        'status' => 'service tomcat-default status'
+        'status' => 'service tomcat-default status',
       )
-    }
-  end
-  context 'jsvc true and init true with wait_timeout file contents test' do
-    let :params do
-      {
-        use_jsvc: true,
-        use_init: true,
-        wait_timeout: 15,
-      }
-    end
-
-    it {
-      File.read("/etc/init.d/tomcat-default").should include "-wait 15"
     }
   end
   describe 'failing tests' do

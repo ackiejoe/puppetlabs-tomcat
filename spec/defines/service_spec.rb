@@ -222,7 +222,7 @@ describe 'tomcat::service', type: :define do
     end
 
     it {
-      is_expected.to contain_file('/etc/init.d/tomcat-default').with_content(/^WAIT_TIMEOUT=15$/)
+      is_expected.to contain_file('/etc/init.d/tomcat-default').with_content(%r{^WAIT_TIMEOUT=15$})
     }
   end
   describe 'failing tests' do
